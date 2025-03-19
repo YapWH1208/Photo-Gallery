@@ -1,0 +1,7 @@
+boto3
+fastapi
+Pillow
+pydantic
+uvicorn
+minio
+python-multipart
