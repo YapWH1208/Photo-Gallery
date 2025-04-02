@@ -1,3 +1,4 @@
+#region Description
 from fastapi import FastAPI, HTTPException, UploadFile, File, Form, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -179,10 +180,9 @@ class CollectionPayload(BaseModel):
     theme: str
     preview_image: str = None
     status: str = "active"
+#endregion
 
-####################################################################################################
-# Themes
-####################################################################################################
+#region Themes
 @themesAPIs.get("/")
 def get_all_themes() -> list[dict]:
     """
@@ -269,11 +269,9 @@ def delete_theme(theme_id: str) -> dict[str, str]:
     conn.commit()
     conn.close()
     return {"message": "Theme deleted successfully"}
+#endregion
 
-####################################################################################################
-# Collections
-####################################################################################################
-
+#region Collections
 @collectionsAPIs.get("/")
 def get_all_collections() -> list[dict]:
     """
@@ -386,11 +384,9 @@ def delete_collection(collection_id: str) -> dict[str, str]:
     conn.commit()
     conn.close()
     return {"message": "Collection deleted successfully"}
+#endregion
 
-####################################################################################################
-# Photos
-####################################################################################################
-
+#region Photos
 @photosAPIs.get("/", deprecated=True)
 def get_all_photos() -> list[dict[str, str]]:
     """
@@ -518,11 +514,9 @@ def download_photo(photo_id: str) -> dict[str, str]:
         return {"url": generate_presigned_url(photo['filepath'])}
     else:
         raise HTTPException(status_code=404, detail="Photo not found")
+#endregion
 
-####################################################################################################
-# Utils
-####################################################################################################
-
+#region Utils
 @utilsAPIs.get("/favorites")
 def get_favorites() -> list[dict]:
     """
@@ -717,12 +711,11 @@ def delete_photo(photo_id: str) -> dict[str, str]:
     conn.commit()
     conn.close()
     return {"message": "Photo deleted successfully"}
+#endregion
 
-####################################################################################################
-# API Routers
-####################################################################################################
-
+#region APIsRouter
 app.include_router(themesAPIs, tags=["Themes"])
 app.include_router(collectionsAPIs, tags=["Collections"])
 app.include_router(photosAPIs, tags=["Photos"])
 app.include_router(utilsAPIs, tags=["Utils"])
+#endregion
